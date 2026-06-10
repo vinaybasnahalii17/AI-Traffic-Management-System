@@ -35,7 +35,40 @@ export function useTrafficEngine() {
   const [savingPerformancePct, setSavingPerformancePct] = useState<number>(34.2);
 
   const nextIdRef = useRef<number>(106);
+  
+  const addSystemLog = (
+    source: string,
+    message: string,
+    level: "info" | "success" | "warning" | "error" = "info"
+  ) => {
+    setLogs((prev) => [
+      {
+        id: Math.random().toString(),
+        time: new Date().toLocaleTimeString(),
+        source,
+        message,
+        level,
+      },
+      ...prev.slice(0, 40),
+    ]);
+  };
 
+  const getLaneCounts = () => {
+    const counts: Record<LaneDirection, number> = {
+      North: 0,
+      East: 0,
+      South: 0,
+      West: 0,
+    };
+
+    allVehicles.forEach((vehicle) => {
+      if (vehicle.position < 0.85) {
+        counts[vehicle.lane]++;
+      }
+    });
+
+    return counts;
+  };
   const [signals, setSignals] = useState<
     Record<
       LaneDirection,
@@ -52,6 +85,45 @@ export function useTrafficEngine() {
     West: { light: "red", timer: 0, greenDuration: 30 },
   });
 
+  const handleInjectVehicle = (
+    lane: LaneDirection,
+    type: VehicleType
+  ) => {
+    const isEmergency = type === "ambulance" || type === "fire_truck";
+
+    if (
+      isEmergency &&
+      allVehicles.some((vehicle) => vehicle.lane === lane && vehicle.isEmergency)
+    ) {
+      addSystemLog(
+        "YOLO",
+        `Emergency vehicle already exists on ${lane} lane.`,
+        "warning"
+      );
+      return;
+    }
+
+    setAllVehicles((prev) => [
+      ...prev,
+      {
+        id: nextIdRef.current++,
+        type,
+        lane,
+        position: 0.02,
+        speed: isEmergency ? 0.012 : type === "truck" ? 0.004 : 0.007,
+        yOffset: Math.floor(Math.random() * 12) - 6,
+        confidence: 0.92,
+        isEmergency,
+        tracked: true,
+      },
+    ]);
+
+    addSystemLog(
+      "YOLO",
+      `Vehicle detected: ${type.toUpperCase()} on ${lane} lane.`,
+      "info"
+    );
+  };
   return {
     controlMode,
     setControlMode,
@@ -86,5 +158,8 @@ export function useTrafficEngine() {
     nextIdRef,
     signals,
     setSignals,
+    addSystemLog,
+    getLaneCounts,
+    handleInjectVehicle,
   };
 }
