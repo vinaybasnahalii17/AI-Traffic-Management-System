@@ -124,6 +124,27 @@ export function useTrafficEngine() {
       "info"
     );
   };
+  const handleOverrideLane = (lane: LaneDirection) => {
+    setActiveGreenLane(lane);
+
+    setSignals((prev) => {
+      const next = { ...prev };
+
+      (Object.keys(next) as LaneDirection[]).forEach((direction) => {
+        next[direction].light = direction === lane ? "green" : "red";
+        next[direction].timer =
+          direction === lane ? next[direction].greenDuration : 0;
+      });
+
+      return next;
+    });
+
+    addSystemLog(
+      "ALGORITHM",
+      `Manual override activated for ${lane} lane.`,
+      "warning"
+    );
+  };
   return {
     controlMode,
     setControlMode,
@@ -161,5 +182,6 @@ export function useTrafficEngine() {
     addSystemLog,
     getLaneCounts,
     handleInjectVehicle,
+    handleOverrideLane,
   };
 }
