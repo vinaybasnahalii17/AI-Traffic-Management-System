@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Vehicle,
   VehicleType,
@@ -7,6 +7,11 @@ import {
   SystemLog,
   PredictionData,
 } from "../types";
+import {
+  trafficApiService,
+  LaneStatePayload,
+} from "../services/trafficApi";
+
 
 export function useTrafficEngine() {
   const [controlMode, setControlMode] = useState<"adaptive" | "fixed">("adaptive");
@@ -145,6 +150,131 @@ export function useTrafficEngine() {
       "warning"
     );
   };
+
+const triggerGeminiAnalysis = async () => {
+    setIsGeminiLoading(true);
+
+    addSystemLog(
+      "GEMINI",
+      "Analyzing adaptive traffic signal timing.",
+      "info"
+    );
+
+    try {
+      const counts = getLaneCounts();
+
+      const laneStates: LaneStatePayload[] = (
+        ["North", "East", "South", "West"] as LaneDirection[]
+      ).map((direction) => ({
+        direction,
+        light: signals[direction].light,
+        vehicleCount: counts[direction],
+        density:
+          counts[direction] > 4
+            ? "HIGH"
+            : counts[direction] > 1
+            ? "MEDIUM"
+            : "LOW",
+        densityScore: Math.min(
+          100,
+          Math.round((counts[direction] / 6) * 100)
+        ),
+      }));
+
+      const data = await trafficApiService.analyzeTraffic({
+        laneStates,
+        currentPrompt: geminiPrompt,
+        hasEmergency: allVehicles.some((vehicle) => vehicle.isEmergency),
+      });
+
+      if (data.reportText) {
+        setGeminiReport(data.reportText);
+      }
+
+      if (data.predictions) {
+        setPredictions(data.predictions);
+      }
+
+      if (data.optimizedTimingConfig) {
+        setSignals((prev) => {
+          const next = { ...prev };
+
+          Object.entries(data.optimizedTimingConfig).forEach(
+            ([direction, time]) => {
+              if (next[direction as LaneDirection]) {
+                next[direction as LaneDirection].greenDuration = time;
+              }
+            }
+          );
+
+          return next;
+        });
+      }
+
+      setSavingPerformancePct(
+        Math.min(60, Math.max(15, 20 + Math.floor(Math.random() * 20)))
+      );
+
+      addSystemLog(
+        "GEMINI",
+        "AI optimized timing configuration received.",
+        "success"
+      );
+    } catch (error: any) {
+      addSystemLog(
+        "GEMINI",
+        `AI analysis failed: ${error.message}`,
+        "error"
+      );
+    } finally {
+      setIsGeminiLoading(false);
+    }
+  };
+
+  const saveTrafficMetrics = async () => {
+    setIsDbSaving(true);
+
+    try {
+      const counts = getLaneCounts();
+
+      const normalWait = 40;
+      const aiWait = Math.round(
+        normalWait * (1 - savingPerformancePct / 100)
+      );
+
+      const data = await trafficApiService.saveMetrics({
+        laneNorthCount: counts.North,
+        laneEastCount: counts.East,
+        laneSouthCount: counts.South,
+        laneWestCount: counts.West,
+        normalWait,
+        aiWait,
+        logStr: `Traffic snapshot saved for preset: ${activePreset}`,
+      });
+
+      if (data.success) {
+        addSystemLog(
+          "DATABASE",
+          `Traffic metrics saved successfully. Entry ID: ${data.entry.id}`,
+          "success"
+        );
+
+        const records = await trafficApiService.fetchHistory();
+
+        if (records.list) {
+          setSavedRecords(records.list);
+        }
+      }
+    } catch (error: any) {
+      addSystemLog(
+        "DATABASE",
+        `Database saving failed: ${error.message}`,
+        "error"
+      );
+    } finally {
+      setIsDbSaving(false);
+    }
+  };
   return {
     controlMode,
     setControlMode,
@@ -183,5 +313,7 @@ export function useTrafficEngine() {
     getLaneCounts,
     handleInjectVehicle,
     handleOverrideLane,
+    triggerGeminiAnalysis,
+    saveTrafficMetrics,
   };
 }
