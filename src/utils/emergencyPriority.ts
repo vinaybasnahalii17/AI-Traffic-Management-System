@@ -3,3 +3,7 @@ export function hasEmergencyVehicle(
 ): boolean {
   return emergencyCount > 0;
 }
+
+export function getEmergencyPriorityWeight(): number {
+  return 100;
+}
