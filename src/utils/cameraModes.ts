@@ -3,3 +3,7 @@ export const cameraModes = [
   "yolo",
   "canny"
 ];
+
+export function getDefaultCameraMode() {
+  return "yolo";
+}
