@@ -29,3 +29,11 @@ Project initialization complete
 - Added emergency priority helpers
 - Added traffic prediction helpers
 - Added camera mode configuration
+
+## updates
+
+- Created traffic statistics utility
+- Added total vehicle calculation
+- Added average vehicle calculation
+- Added busiest lane calculation
+- Added traffic statistics component
