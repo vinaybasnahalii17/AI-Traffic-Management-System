@@ -1,3 +1,5 @@
+
+import TrafficStats from "./TrafficStats";
 export default function TrafficStats() {
   return (
     <div>
@@ -18,3 +20,5 @@ export default function TrafficStats() {
 
 <p>Average Vehicles Per Lane: 0</p>
 <p>Busiest Lane: North</p>
+
+<TrafficStats />
