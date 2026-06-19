@@ -32,3 +32,13 @@ export default function TrafficStats() {
     </div>
   );
 }
+
+export default function TrafficStats() {
+  return (
+    <div>
+      <h2>Traffic Statistics</h2>
+
+      <p>Total Vehicles: 0</p>
+    </div>
+  );
+}
