@@ -17,3 +17,4 @@ export default function TrafficStats() {
 }
 
 <p>Average Vehicles Per Lane: 0</p>
+<p>Busiest Lane: North</p>
