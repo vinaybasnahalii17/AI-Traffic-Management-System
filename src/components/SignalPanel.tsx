@@ -5,3 +5,4 @@ export default function SignalPanel() {
     </div>
   );
 }
+<p>North Signal: Green</p>
