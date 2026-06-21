@@ -8,3 +8,4 @@ export default function SignalPanel() {
 <p>North Signal: Green</p>
 <p>East Signal: Red</p>
 <p>South Signal: Green</p>
+<p>West Signal: Red</p>
