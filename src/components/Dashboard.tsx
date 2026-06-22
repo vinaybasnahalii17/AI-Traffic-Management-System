@@ -1,6 +1,7 @@
 import { useTrafficEngine } from "../hooks/useTrafficEngine";
 import SignalPanel from "./SignalPanel";
 import VehiclePanel from "./VehiclePanel";
+import LogPanel from "./LogPanel";
 
 export default function Dashboard() {
   const {
@@ -51,6 +52,7 @@ export default function Dashboard() {
       ))}
       <SignalPanel />
       <VehiclePanel />
+      <LogPanel />
 
     </div>
   );
