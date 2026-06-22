@@ -1,4 +1,5 @@
 import { useTrafficEngine } from "../hooks/useTrafficEngine";
+import SignalPanel from "./SignalPanel";
 
 export default function Dashboard() {
   const {
@@ -50,3 +51,4 @@ export default function Dashboard() {
     </div>
   );
 }
+<SignalPanel />
