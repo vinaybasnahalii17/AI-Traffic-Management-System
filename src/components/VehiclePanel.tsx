@@ -3,6 +3,7 @@ export default function VehiclePanel() {
     <div>
       <h2>Vehicle Tracking Panel</h2>
       <p>Vehicle Type: Car</p>
+      <p>Lane: North</p>
     </div>
   );
 }
