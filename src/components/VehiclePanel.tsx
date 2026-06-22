@@ -5,6 +5,7 @@ export default function VehiclePanel() {
       <p>Vehicle Type: Car</p>
       <p>Lane: North</p>
       <p>Position: 0.32</p>
+      <p>Speed: 0.007</p>
     </div>
   );
 }
