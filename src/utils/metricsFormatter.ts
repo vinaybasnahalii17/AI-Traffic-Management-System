@@ -3,4 +3,8 @@ export function formatMetric(
 ): string {
   return `${value}%`;
 }
-
+export function roundMetric(
+  value: number
+): number {
+  return Math.round(value);
+}
