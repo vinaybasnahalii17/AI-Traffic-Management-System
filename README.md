@@ -23,3 +23,11 @@ This project is an AI-based traffic management system using react, TypeScript, v
 
 ## Status
 Project initialization completed
+
+## Upadates
+
+- Created database-module branch
+- Added database helper
+- Added history storage utility
+- Added metrics formatter
+- Added database notes
