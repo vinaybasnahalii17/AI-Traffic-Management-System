@@ -23,3 +23,11 @@ This project is an AI-based traffic management system using react, TypeScript, v
 
 ## Status
 Project initialization completed
+
+## Updates
+
+- Created ui-dashboard branch
+- Added dashboard header
+- Added footer
+- Added theme helper
+- Added layout helper
