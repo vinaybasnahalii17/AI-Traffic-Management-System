@@ -87,3 +87,4 @@ Project initialization completed
 
 - Adaptive traffic control
 - Vehicle detection
+- Traffic statistics
