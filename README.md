@@ -86,3 +86,4 @@ Project initialization completed
 ## Project Features
 
 - Adaptive traffic control
+- Vehicle detection
