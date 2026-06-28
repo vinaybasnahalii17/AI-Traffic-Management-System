@@ -83,3 +83,6 @@ Project initialization completed
 - Added version helper
 - Improved dashboard documentation
 
+## Project Features
+
+- Adaptive traffic control
