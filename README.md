@@ -1,101 +1,114 @@
-# AI-Traffic-Management -System
+## Traffic Control Algorithm
 
-This project is an AI-based traffic management system using react, TypeScript, vehicle detection logic, and traffic analytics.
+The Traffic Control Algorithm is the core module responsible for managing traffic signals dynamically based on vehicle density and emergency vehicle detection. It replaces traditional fixed-time signal control with adaptive signal timing.
 
-## Features
--vehicle detection
--vehicle counting
--Traffic monitering 
--Real-time analytics
--Dashboard visualization
+### Algorithm Workflow
 
-## Team
--Member 1:AI Module
--Member 2:Fronted Module
--Member 3:Backend Module
+1. Initialize the traffic signal states for all four lanes (North, East, South, West).
+2. Detect and register incoming vehicles.
+3. Store vehicle information such as lane, type, speed, and position.
+4. Count the number of vehicles in each lane.
+5. Calculate traffic density (Low, Medium, High) for every lane.
+6. Check for emergency vehicles (ambulance or fire truck).
+7. If an emergency vehicle is detected:
+   - Immediately prioritize its lane.
+   - Turn that lane's traffic signal to green.
+8. Otherwise:
+   - Send lane information to the AI analysis module.
+   - Receive optimized green signal durations.
+9. Update traffic signal timings based on AI recommendations.
+10. Record all events in the system log.
+11. Save traffic metrics to the backend database.
+12. Continuously repeat the process to adapt to changing traffic conditions.
 
-## Technologies 
--React 
--TypeScript
--Vite
--Python
--OpenCV
+---
 
-## Status
-Project initialization complete
+## My Contribution
 
-- Added lane analysis utility
-- Added density calculations
-- Added emergency priority helpers
-- Added traffic prediction helpers
-- Added camera mode configuration
+I eveloped the complete **Traffic Control Algorithm** module, which includes:
 
-## updates
+- Custom React Hook (`useTrafficEngine.ts`)
+- Adaptive traffic signal control
+- Vehicle injection and management
+- Lane vehicle counting
+- Traffic density calculation
+- Emergency vehicle priority logic
+- Manual signal override
+- AI analysis integration
+- System log generation
+- Traffic metrics storage
+- Backend API communication using `trafficApi.ts`
 
-- Created traffic statistics utility
-- Added total vehicle calculation
-- Added average vehicle calculation
-- Added busiest lane calculation
-- Added traffic statistics component
+---
 
+## Key Functions Implemented
 
-- Created signal monitoring panel
-- Added signal displays
-- Added signal helper functions
-- Integrated signal panel
+| Function | Description |
+|----------|-------------|
+| `handleInjectVehicle()` | Adds a new vehicle to the selected lane. |
+| `getLaneCounts()` | Counts the number of vehicles in each lane. |
+| `handleOverrideLane()` | Allows manual override of traffic signals. |
+| `triggerGeminiAnalysis()` | Sends traffic data for AI analysis and receives optimized timings. |
+| `saveTrafficMetrics()` | Stores traffic statistics in the backend database. |
+| `addSystemLog()` | Records important system events and activities. |
 
+---
 
-- Added VehiclePanel component
-- Added vehicle information display
-- Added tracking information
-- Integrated vehicle panel into dashboard
+##  Algorithm Flow
 
+```
+Start
+   │
+   ▼
+Initialize Traffic Signals
+   │
+   ▼
+Add / Detect Vehicles
+   │
+   ▼
+Count Vehicles in Each Lane
+   │
+   ▼
+Calculate Traffic Density
+   │
+   ▼
+Emergency Vehicle Present?
+   │
+ ┌─Yes──────────────┐
+ │                  ▼
+ │        Give Green Signal
+ │                  │
+ └──────────────► Update Signals
+                    │
+                    ▼
+             No Emergency
+                    │
+                    ▼
+          Perform AI Traffic Analysis
+                    │
+                    ▼
+       Receive Optimized Signal Timings
+                    │
+                    ▼
+          Update Traffic Signals
+                    │
+                    ▼
+          Save Traffic Metrics
+                    │
+                    ▼
+              Generate Logs
+                    │
+                    ▼
+                  End
+```
 
-- Added LogPanel component
-- Added log source display
-- Added timestamp display
-- Added log level display
-- Added log helper functions
-- Integrated log panel
-=======
-Project initialization completed
+---
 
-## Upadates
+## Objectives of the Algorithm
 
-- Created database-module branch
-- Added database helper
-- Added history storage utility
-- Added metrics formatter
-- Added database notes
-
-=======
-## Updates
-
-- Created ui-dashboard branch
-- Added dashboard header
-- Added footer
-- Added theme helper
-- Added layout helper
-
-## Final Dashboard
-
-- Added system information component
-- Added version helper
-- Improved dashboard documentation
-
-## Project Features
-
-- Adaptive traffic control
-- Vehicle detection
-- Traffic statistics.
-
-## Completed Modules
-
-- Dashboard
-- Traffic Engine
-- Database
-- AI Detection
-
-## Project Status
-
-Project development completed successfully.
+- Dynamically control traffic signals.
+- Reduce vehicle waiting time.
+- Improve traffic flow efficiency.
+- Prioritize emergency vehicles.
+- Optimize signal timing using AI.
+- Record traffic statistics for future analysis.
